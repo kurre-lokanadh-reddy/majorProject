@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>mY Page</title>
+    <link rel="shortcut icon" href="static/images/ant1.ico" type="image/x-icon">
+	<link rel="icon" href="static/images/ant1.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="static/css/Navbar.css">
+  </head>
+  <body >
+
+    <div class="topnav" id="myTopnav">
+      <a href="/"><image href="static/images/ant1.png" alt="IMG"></image></a>
+	  <a href="/">Home</a>
+	  <a href="/docs">Docs</a>
+	  <a href="/exmp">Examples</a>
+	  <div class="dropdown">
+	    <button class="dropbtn">Dropdown
+	    </button>
+	    <div class="dropdown-content">
+	      <a href="/emojify">Emojifyer</a>
+	      <a href="/summerizer">Summerizer</a>
+	      <a href="#">Link 3</a>
+	    </div>
+	  </div>
+	  <a href="/aboutus">About</a>
+	</div>
+    <div class="content_container">
+    
+    {% include contentFile %}
+    <div id="content">{% block content %}{% endblock %}</div>
+    </div>
+    <div class="footer-content">
+    	this the footer for all these slides .be carefull with this created buy @kurre lokandh reddy 
+    </div>
+  </body>
+</html>

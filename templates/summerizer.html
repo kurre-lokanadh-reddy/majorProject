@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/summerizer.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <!-- link href="static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/ -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+<body>
+	<!-- about section -->
+	<div class="container">
+		<h2 class="center">Summeryzer</h2>
+		<p class="about">
+			this is about the summeryzer frame work and how it works .to know how diff summeryzers work check this out.<a href="/comparer">---></a>
+		</p>
+	</div>
+<!-- Start of Main Section -->
+ <div class="container">
+    <div class="section">
+       
+      <!--   Icon Section   -->
+      <div class="row">
+      	<div class="input-field">
+         <h2 class="center brown-text"><i class="material-icons">chrome_reader_mode</i></h2>
+         <form method="POST" action="/analyze">
+         <textarea name="rawtext" cols="100%" rows="5" class="form-control" required="true" placeholder="Enter Text Here"></textarea>
+          
+         <br/>
+         <button class="btn btn-small waves-effect waves-pink" type="reset">Clear</button>
+         <button class="btn btn-small waves-effect waves-green " type="submit">Summarize</button>
+          
+        </form>
+       </div>
+      </div>
+
+        <div class="row">
+        <div class="input-field">
+          <h2 class="center brown-text"><i class="material-icons">chrome_reader_mode</i></h2>
+          <form method="POST" action="/analyze_url">
+            <input type="text" name="raw_url" placeholder="Enter URL Here" required="true">
+            <br/>
+            <button class="btn btn-small waves-effect waves-pink " type="reset">Clear</button>
+            <button class="btn btn-small waves-effect waves-green " type="submit">Summarize</button>
+          
+          </form>
+        </div>
+        </div>
+
+    </div>
+  </div>
+  <!-- End -->
+
+
+  <!-- Result Display-->
+  <section class="section">
+  <div class="container white-text">
+ 
+      <!--   Icon Section   -->
+      <div class="row2 ">
+        <div class="col ">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+            <h3 class="center">Your Text</h3>
+             <p>Reading Time: <span style="color:#0091EA;">{{ final_reading_time }} min </span></p>
+            <p class="light">{{ctext}}</p>
+            <div class="alert alert-info" role="alert"><p>Time Elapsed: <span style="color:#0091EA;">{{ final_time }} mins </span></p><br/> </div>
+          </div>
+        </div>
+
+        <div class="col darken-2">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">chrome_reader_mode</i></h2>
+            <h3 class="center">Summarized</h3>
+              <div class="" role="alert">
+              <p>Reading Time: <span style="color:#0091EA;">{{ summary_reading_time }} min </span></p>
+        	</div>
+            <p class="light">{{ final_summary }}</p>
+          
+          </div>
+        </div>
+
+      </div>
+
+  
+  </div>
+</section>
+
+</body>
+</html>
