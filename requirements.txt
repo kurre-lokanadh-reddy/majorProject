@@ -10,4 +10,3 @@ sumy==0.8.1
 tensorflow==1.13.1
 thinc==6.10.3
 gunicorn
-en_core_web_sm
