@@ -22,7 +22,7 @@ from bs4 import BeautifulSoup
 # from urllib.request import urlopen
 from urllib.request import urlopen
 from keras.models import load_model
-loaded_emojifer = load_model("saved_models/model_emojify")
+loaded_emojifer = load_model("saved_models/model_emoji.h5",compile=False)
 
 # Sumy Pkg
 from sumy.parsers.plaintext import PlaintextParser
