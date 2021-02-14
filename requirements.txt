@@ -1,5 +1,5 @@
-
-bs4==4.9.3
+beautifulsoup4==4.9.3
+bs4
 emoji==1.0.1import 
 flask==1.1.2
 gensim==3.8.3
