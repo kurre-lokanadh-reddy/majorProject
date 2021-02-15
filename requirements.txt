@@ -1,5 +1,6 @@
 beautifulsoup4==4.9.3
 bs4
+numpy==1.19.2
 h5py==2.10.0
 emoji==1.0.1 
 flask==1.1.2
