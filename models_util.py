@@ -1,4 +1,4 @@
-from keras.models import load_model
+
 
 import emoji
 import numpy as np
@@ -37,7 +37,7 @@ def read_glove_vecs(glove_file):
         
         i = 1
         words_to_index = {}
-        for w in list(f.read().strip().split()):
+        for w in list(file.read().strip().split()):
             words_to_index[w] = i
             i = i + 1
     return words_to_index
@@ -53,7 +53,7 @@ def label_to_emoji(label):
     Converts a label (int or string) into the corresponding emoji code (string) ready to be printed
     """
     return emoji.emojize(emoji_dictionary[str(label)], use_aliases=True)
-def e_predict(sentence,loaded_model):
+'''def e_predict(sentence,loaded_model):
     #print("in")
     sentences=np.array(list(sentence.split("."))) 
     #print("sentences = ",sentences)
@@ -70,4 +70,4 @@ def e_predict(sentence,loaded_model):
     res="" 
     for i,j in zip(sentences , preds):
         res = res + i+" --> "+label_to_emoji(j)+"\n" 
-    return res
+    return res'''

@@ -8,7 +8,7 @@ Created on Tue Jan 19 10:31:44 2021
 from __future__ import unicode_literals
 from flask import Flask,render_template,url_for,request
 
-from models_util import e_predict
+from models_util import *
 from spacy_summarization import text_summarizer
 from gensim.summarization import summarize
 from nltk_summarization import nltk_summarizer
@@ -21,9 +21,9 @@ nlp = spacy.load('en_core_web_sm')
 from bs4 import BeautifulSoup
 # from urllib.request import urlopen
 from urllib.request import urlopen
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 loaded_emojifer = load_model("saved_models/model_emoji.h5",compile=False)
-
+word_to_index = read_glove_vecs('data/words_corpus.txt')
 # Sumy Pkg
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
@@ -60,21 +60,45 @@ app = Flask(__name__)
 def tohome():
 	return render_template("base.html",contentFile="home.html")
 
-@app.route("/<content>",methods=["GET","POST"])
-def index(content):
+@app.route("/emojify",methods=["GET","POST"])
+def emojify():
 	if request.method=="POST":
-		if content == "emojify":
-			textChat = request.form["textChat"]
-			result = e_predict(sentence = textChat,loaded_model=loaded_emojifer)
-			return render_template("base.html",contentFile="emojify.html",prediction=result)
+		textChat = request.form["textChat"]
+		sentences=np.array(list(textChat.split("."))) 
+		sent_indi = sentences_to_indices(sentences , word_to_index) 
+		preds = loaded_emojifer.predict(sent_indi)
+		preds = np.argmax(preds,axis=1)
+		res="" 
+		for i,j in zip(sentences , preds):
+			res = res + i+" --> "+label_to_emoji(j)+"\n"
+		return render_template("base.html",contentFile="emojify.html",prediction=res)
 	else:
-		return render_template("base.html",contentFile=content+".html")
+		return render_template("base.html",contentFile="emojify.html")
+
+@app.route("/docs")
+def docs():
+	return render_template("base.html",contentFile="docs.html")
+
+@app.route("/exmp")
+def exmp():
+	return render_template("base.html",contentFile="exmp.html")
+
+@app.route("/aboutus")
+def aboutus():
+	return render_template("base.html",contentFile="aboutus.html")
 
 @app.route("/summerizer",methods=["GET","POST"])
 def summerizer():
 	start = time.time()
+	rawtext = "EXAMPLE !!!--->"
+	final_summary = "EXAMPLE !!!--->"
+	final_time=1.00
+	final_reading_time=1.30
+	summary_reading_time=0.14
 	if request.method == 'POST':
-		rawtext = request.form['rawtext']
+		rawtext = request.form.get('rawtext')
+		if rawtext== None:
+			rawtext = get_text(request.form.get('raw_url'))
 		final_reading_time = readingTime(rawtext)
 		final_summary = text_summarizer(rawtext)
 		summary_reading_time = readingTime(final_summary)
@@ -82,7 +106,7 @@ def summerizer():
 		final_time = end-start
 	return render_template('base.html',contentFile="summerizer.html",ctext=rawtext,final_summary=final_summary,final_time=final_time,final_reading_time=final_reading_time,summary_reading_time=summary_reading_time)
 
-@app.route('/summerizer',methods=['GET','POST'])
+'''@app.route('/summerizer',methods=['GET','POST'])
 def summerizer_url():
 	start = time.time()
 	if request.method == 'POST':
@@ -94,6 +118,7 @@ def summerizer_url():
 		end = time.time()
 		final_time = end-start
 	return render_template('base.html',contentFile="summerizer.html",ctext=rawtext,final_summary=final_summary,final_time=final_time,final_reading_time=final_reading_time,summary_reading_time=summary_reading_time)
+'''
 
 @app.route('/comparer',methods=['GET','POST'])
 def comparer():
@@ -115,10 +140,11 @@ def comparer():
 
 		end = time.time()
 		final_time = end-start
-	return render_template('base.html',contentFile="compare_summary.html",ctext=rawtext,final_summary_spacy=final_summary_spacy,final_summary_gensim=final_summary_gensim,final_summary_nltk=final_summary_nltk,final_time=final_time,final_reading_time=final_reading_time,summary_reading_time=summary_reading_time,summary_reading_time_gensim=summary_reading_time_gensim,final_summary_sumy=final_summary_sumy,summary_reading_time_sumy=summary_reading_time_sumy,summary_reading_time_nltk=summary_reading_time_nltk)
-
+		return render_template('base.html',contentFile="compare_summary.html",ctext=rawtext,final_summary_spacy=final_summary_spacy,final_summary_gensim=final_summary_gensim,final_summary_nltk=final_summary_nltk,final_time=final_time,final_reading_time=final_reading_time,summary_reading_time=summary_reading_time,summary_reading_time_gensim=summary_reading_time_gensim,final_summary_sumy=final_summary_sumy,summary_reading_time_sumy=summary_reading_time_sumy,summary_reading_time_nltk=summary_reading_time_nltk)
+	else:
+		return render_template('base.html',contentFile="compare_summary.html")
 
 
 
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)
